@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>mexWrapper by jmlopez-rod</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>mexWrapper</h1>
+        <p>C++ header file for easy creation of MATLAB mex files.</p>
+
+        <p class="view"><a href="https://github.com/jmlopez-rod/mexWrapper">View the Project on GitHub <small>jmlopez-rod/mexWrapper</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/jmlopez-rod/mexWrapper/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/jmlopez-rod/mexWrapper/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/jmlopez-rod/mexWrapper">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>mexWrapper</h1>
+
+<p>mexWrapper is a C++ header file containing class definitions to help you 
+access MATLAB matrices in C++. They are also useful to link existing C/C++ 
+and Fortran code to MATLAB.</p>
+
+<h3>Objects</h3>
+
+<p>There are two main objects that we can use:</p>
+
+<ol>
+<li><code>array</code></li>
+<li><code>cell</code></li>
+</ol><p>An <code>array</code> is a template class that depends on <code>mxType</code> and the dimension of the
+<code>array</code>. There are six possible values for the <code>mxType</code>:</p>
+
+<ul>
+<li>
+<code>IN</code> - Access matrices from MATLAB.</li>
+<li>
+<code>PR</code> - If you create a matrix using a regular <code>mxArray</code> and you 
+     want to use the functions provided by <code>array</code> then use this type.</li>
+<li>
+<code>OUT</code> - Set matrices in MATLAB.</li>
+<li>
+<code>CPP</code> - Create an <code>array</code> using memory managed by C++.</li>
+<li>
+<code>ML</code> - Create an <code>array</code> using MATLAB's memory manager.</li>
+<li>
+<code>CELL</code> - DO NOT use this. A <code>cell</code> is an array of pointers that point to 
+       <code>array</code>s of this type.</li>
+</ul><h3>Inheritance</h3>
+
+<p>All <code>array</code>s are derived from a base template class <code>mxBase</code>. This base class 
+contains function definitions to access the <code>array</code> information.</p>
+
+<p>If you ever want to pass an <code>array</code> to a function I suggest you declare 
+the function as follows:</p>
+
+<pre><code>void function(mxBase&lt;n&gt;&amp; m);
+</code></pre>
+
+<p>instead of, say</p>
+
+<pre><code>void function(array&lt;IN, n&gt;&amp; m);
+</code></pre>
+
+<p>The first declaration allows you to pass any <code>array</code>, this includes the 
+arrays contained in a <code>cell</code>. The second one is more specific, it only
+takes an array of type <code>IN</code>. Notice however that the dimension is important.</p>
+
+<h3>Array Indexing</h3>
+
+<p>The index of an <code>array</code> starts at 1 as in MATLAB and fortran. To access
+an element of an <code>array</code> as if was a 1-dimensional <code>array</code> you can use the
+<code>[]</code> operator. If <code>n</code> is the dimension of the array then you can access a 
+particular index through the use of the <code>()</code> operator. If <code>n == 2</code> then the
+<code>()</code> operator takes in 2 integers. If <code>n == 3</code> it takes 3 integers. 
+If <code>n &gt; 3</code> then <code>()</code> takes a C/C++ array with <code>n</code> integers specifying the index. </p>
+
+<h3>Array Size</h3>
+
+<p>You can access the size of the array by using the <code>size</code> function. If no 
+parameter is given it will return a pointer to the first integer 
+specifying the size of the first dimension. Otherwise, <code>size</code> will 
+take a positive integer (careful, we do not check if this value is valid).</p>
+
+<p>To change the size you can use the function <code>setSize</code>. If the dimension 
+is less than 3 then you can use the template function </p>
+
+<pre><code>setSize(array, d1, d2, mxComplexity) 
+</code></pre>
+
+<p><em>WARNING</em>: <code>setSize</code> deletes the contents of the array and allocates 
+new memory. When declaring an array of type <code>ML</code>, or <code>OUT</code> then all elements 
+are initialized to zero when setting the size of the <code>array</code>. If you 
+use <code>CPP</code> then the elements are not initialized.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/jmlopez-rod">jmlopez-rod</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
